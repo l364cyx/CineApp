@@ -67,6 +67,7 @@ public class PeliculasController {
 		
 		if (!multiPart.isEmpty()) {
 			String nombreImagen = Utileria.guardarImagen(multiPart,request);
+			System.out.println("Nombre de la imagen: " + nombreImagen);
 			pelicula.setImagen(nombreImagen);
 		}
 		
