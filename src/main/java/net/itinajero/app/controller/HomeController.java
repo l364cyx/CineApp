@@ -1,0 +1,96 @@
+package net.itinajero.app.controller;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import net.itinajero.app.model.Pelicula;
+import net.itinajero.app.service.IPeliculasService;
+import net.itinajero.app.util.Utileria;
+
+@Controller
+public class HomeController 
+{
+	//Con esta anotación Spring inyecta automáticamente la instancia de nuestra clase al arrancar la aplicación
+	@Autowired
+	private IPeliculasService servicePeliculas;
+	
+	private SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+	
+	//@GetMapping(value="/home")
+	@RequestMapping(value="/home", method=RequestMethod.GET)
+	public String goHome()
+	{
+		return "home";//nombre de la vista
+	}
+	
+	//@PostMapping(value="/search")
+	@RequestMapping(value="/search", method=RequestMethod.POST)
+	public String buscar(@RequestParam("fecha")  String fecha, Model model)
+	{
+		System.out.println("Buscando todas las películas en exhibición para la fecha: " + fecha);
+		
+		List<String> listaFechas = Utileria.getNextDays(10);
+		
+		List<Pelicula> peliculas = servicePeliculas.buscarTodas();
+		
+		model.addAttribute("fechaBusqueda", fecha);
+		model.addAttribute("peliculas", peliculas);
+		model.addAttribute("fechas", listaFechas);
+		
+		
+		return "home";//nombre de la vista
+	}
+	
+	@RequestMapping(value="/", method=RequestMethod.GET)//borrar fichero index.jsp para que cargue nuestro jsp home.jsp
+	public String mostrarPrincipal(Model model)
+	{
+		List<String> listaFechas = Utileria.getNextDays(10);
+		
+		List<Pelicula> peliculas = servicePeliculas.buscarTodas();
+//		peliculas.add("Fast And Fourious");
+//		peliculas.add("Aliens");
+//		peliculas.add("Hulk");
+//		peliculas.add("Imparable");
+		model.addAttribute("fechaBusqueda", df.format(new Date()));
+		model.addAttribute("peliculas", peliculas);
+		model.addAttribute("fechas", listaFechas);
+		
+		return "home";//nombre de la vista
+	}
+	
+
+
+//	@RequestMapping(value="/detalle", method=RequestMethod.GET)
+//	public String mostrarDetalle(Model model, @RequestParam("idMovie") int idPelicula, @RequestParam("fecha") String fecha)
+//	{
+//		System.out.println("Buscando Horarios para la Pelicula: " + idPelicula);
+//		System.out.println("Para la Fecha: " + fecha);
+//
+//		return "detalle";//nombre de la vista
+//	}
+	
+	@RequestMapping(value="/detalle/{id}/{fecha}", method=RequestMethod.GET)
+	public String mostrarDetalle(Model model, @PathVariable("id") int idPelicula, @PathVariable("fecha") String fecha)
+	{
+		System.out.println("Buscando Horarios para la Pelicula: " + idPelicula);
+		System.out.println("Para la Fecha: " + fecha);
+
+		model.addAttribute("pelicula", servicePeliculas.buscarPorId(idPelicula));
+		
+		return "detalle";//nombre de la vista
+	}
+	
+	
+	
+}
