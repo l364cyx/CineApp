@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import net.itinajero.app.model.Banner;
 import net.itinajero.app.model.Pelicula;
+import net.itinajero.app.service.IBannersService;
 import net.itinajero.app.service.IPeliculasService;
 import net.itinajero.app.util.Utileria;
 
@@ -24,6 +26,9 @@ public class HomeController
 	//Con esta anotación Spring inyecta automáticamente la instancia de nuestra clase al arrancar la aplicación
 	@Autowired
 	private IPeliculasService servicePeliculas;
+	
+	@Autowired
+	private IBannersService bannersService;
 	
 	private SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 	
@@ -42,11 +47,17 @@ public class HomeController
 		
 		List<String> listaFechas = Utileria.getNextDays(10);
 		
+		//Agragar al modelo listado de Películas para desplegarlo
 		List<Pelicula> peliculas = servicePeliculas.buscarTodas();
+		
+		//Agragar al modelo listado de Banners para desplegarlo
+		List<Banner> banners = bannersService.buscarTodos();
 		
 		model.addAttribute("fechaBusqueda", fecha);
 		model.addAttribute("peliculas", peliculas);
 		model.addAttribute("fechas", listaFechas);
+		model.addAttribute("banners", banners);
+		
 		
 		
 		return "home";//nombre de la vista
@@ -58,13 +69,15 @@ public class HomeController
 		List<String> listaFechas = Utileria.getNextDays(10);
 		
 		List<Pelicula> peliculas = servicePeliculas.buscarTodas();
-//		peliculas.add("Fast And Fourious");
-//		peliculas.add("Aliens");
-//		peliculas.add("Hulk");
-//		peliculas.add("Imparable");
+		
+		//Agragar al modelo listado de Banners para desplegarlo
+		List<Banner> banners = bannersService.buscarTodos();
+				
 		model.addAttribute("fechaBusqueda", df.format(new Date()));
 		model.addAttribute("peliculas", peliculas);
 		model.addAttribute("fechas", listaFechas);
+		model.addAttribute("banners", banners);
+		
 		
 		return "home";//nombre de la vista
 	}

@@ -17,6 +17,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,16 +46,27 @@ public class PeliculasController {
 		
 	}
 	
+	
 	@GetMapping(value="/create")
-	public String crear()
+	public String crear(@ModelAttribute Pelicula pelicula)
 	{
+		/*
+		 * public String crear() --> En caso de introducir mal los datos del formulario no mantiene los datos en el formulario 
+		 * 
+		 * public String crear(@ModelAttribute Pelicula pelicula) --> con @ModelAttribute es lo mismo pero con los tags de formularios: 
+		 * <form:form  >nos mantiene los datos en el formulario ya que se crea el objeto pelicula
+		 */
+		
 		return "peliculas/formPeliculas";
 	}
 
 	@PostMapping(value="/save")
-	public String guardar(Pelicula pelicula, BindingResult result, RedirectAttributes attributes,
-			@RequestParam("archivoImagen") MultipartFile multiPart, HttpServletRequest request)//Data Binding:Pelicula  no es necesario crear ni llamar a objeto Pelicula
+	public String guardar(@ModelAttribute Pelicula pelicula, //Data Binding:Pelicula  no es necesario crear ni llamar a objeto Pelicula
+							BindingResult result, //Control de Errores en Data Binding
+							RedirectAttributes attributes, //Mensajes antes de recargar
+							@RequestParam("archivoImagen") MultipartFile multiPart, HttpServletRequest request)//Subida de Ficheros
 	{
+		//Control de Errores en Data Binding
 		if(result.hasErrors())
 		{
 			for (ObjectError error: result.getAllErrors())
@@ -65,6 +77,7 @@ public class PeliculasController {
 			return "peliculas/formPeliculas";
 		}
 		
+		//Subida de Imagen
 		if (!multiPart.isEmpty()) {
 			String nombreImagen = Utileria.guardarImagen(multiPart,request);
 			System.out.println("Nombre de la imagen: " + nombreImagen);
@@ -73,14 +86,22 @@ public class PeliculasController {
 		
 		System.out.println("Recibiendo objeto pel铆cula " + pelicula);
 		
-		System.out.println("Elementos en la lista antes de la inserci贸n: " + peliculasService.buscarTodas().size());
+		System.out.println("Elementos en la lista antes de la inserci髇: " + peliculasService.buscarTodas().size());
 		
+		/*
+		 * 1.Inserci髇 nueva Pel韈ula mediante DataBinding: no es necesario llamar objeto Pel韈ula, 
+		 *    Con DataBinding Spring MVC extrae din醡icamente los datos de entrada del usuario y los asigna a 
+		 *    objetos de Modelo de nuestra aplicaci髇.
+		 * 
+		 * 2.peliculasService: con @Autowired hacemos Inyecci髇 de Dependencias de una clase de servicio en un Controlador
+		 * 
+		 */
 		peliculasService.insertar(pelicula);
 		
-		System.out.println("Elementos en la lista despu茅s de la inserci贸n: " + peliculasService.buscarTodas().size());
+		System.out.println("Elementos en la lista despu閟 de la inserci髇: " + peliculasService.buscarTodas().size());
 		
-		//Esto nos permite poder enviar un mensaje antes de hacer la redirecci贸n, es temporal, al redireccionar son eliminados de la sesi贸n
-		attributes.addFlashAttribute("mensaje", "El registro fue guardado");
+		//Esto nos permite poder enviar un mensaje antes de hacer la redirecci髇, es temporal, al redireccionar son eliminados de la sesi贸n
+		attributes.addFlashAttribute("mensaje", "El registro Pel韈ula fue guardado");
 		
 		return "redirect:/peliculas/index";
 	}

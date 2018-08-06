@@ -40,25 +40,38 @@ public class Utileria {
 	}
 	
 	/*
-	 * MÃ©todo que guarda una imagen y nos devuelve el nombre de la pelicula
+	 * Método que guarda una imagen y nos devuelve el nombre de la pelicula
 	 */
 	public static String guardarImagen(MultipartFile multiPart, HttpServletRequest request) 
 	{
 		// Obtenemos el nombre original del archivo
 		String nombreOriginal = multiPart.getOriginalFilename();
+		nombreOriginal.replaceAll(" ", "-");
+		String nombreFinal = randomAlphaNumeric(8) + nombreOriginal;
 		// Obtenemos la ruta ABSOLUTA del directorio images
 		// apache-tomcat/webapps/cineapp/resources/images/
 		String rutaFinal = request.getServletContext().getRealPath("/resources/images/");
 		try {
 			// Formamos el nombre del archivo para guardarlo en el disco duro
-			File imageFile = new File(rutaFinal + nombreOriginal);
+			File imageFile = new File(rutaFinal + nombreFinal);
 			// Aqui se guarda fisicamente el archivo en el disco duro
 			multiPart.transferTo(imageFile);
-			return nombreOriginal;
+			return nombreFinal;
 		} catch (IOException e) {
 			System.out.println("Error " + e.getMessage());
 			return null;
 		}
 	}
+	
+	// Metodo para generar una cadena de longitud N de caracteres aleatorios.
+		public static String randomAlphaNumeric(int count) {
+			String CARACTERES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+			StringBuilder builder = new StringBuilder();
+			while (count-- != 0) {
+				int character = (int) (Math.random() * CARACTERES.length());
+				builder.append(CARACTERES.charAt(character));
+			}
+			return builder.toString();
+		}
 	
 }
