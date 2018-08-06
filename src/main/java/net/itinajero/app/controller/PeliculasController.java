@@ -48,7 +48,7 @@ public class PeliculasController {
 	
 	
 	@GetMapping(value="/create")
-	public String crear(@ModelAttribute Pelicula pelicula)
+	public String crear(@ModelAttribute Pelicula pelicula, Model model)
 	{
 		/*
 		 * public String crear() --> En caso de introducir mal los datos del formulario no mantiene los datos en el formulario 
@@ -56,6 +56,9 @@ public class PeliculasController {
 		 * public String crear(@ModelAttribute Pelicula pelicula) --> con @ModelAttribute es lo mismo pero con los tags de formularios: 
 		 * <form:form  >nos mantiene los datos en el formulario ya que se crea el objeto pelicula
 		 */
+		
+		
+		model.addAttribute("generos", peliculasService.buscarGeneros());
 		
 		return "peliculas/formPeliculas";
 	}

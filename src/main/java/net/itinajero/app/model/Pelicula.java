@@ -6,8 +6,8 @@ public class Pelicula {
 
 	private int id;
 	private String titulo;
-	private int duracion;
-	private String clasificacion;
+	private int duracion=100;
+	private String clasificacion="B";
 	private String genero;
 	private String imagen = "cinema.png"; // imagen por default	
 	private Date fechaEstreno;	
