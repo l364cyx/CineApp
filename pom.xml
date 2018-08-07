@@ -10,7 +10,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>5.0.6.RELEASE</version>
+			<version>5.0.7.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -23,6 +23,44 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
-	</dependencies>
+	
+		<!-- Artefacto Spring Data JPA -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>2.0.9.RELEASE</version>
+		</dependency>
+		
+		<!-- Dependencia parte del Framework de persistencia de datos más usado
+		API JPA es una especificación de JavaEE y no una implementación concreta
+		utilizaremos la tecnología Hibernate, de las más usadas-->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>5.3.4.Final</version>
+		</dependency>
+		
+		<!-- Artefecto hibernate validator, esta librería se usa para agregar validaciones a la clase de Modelo -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>6.0.11.Final</version>
+		</dependency>
+		
+		<!-- Conector JDBC para conexiones a BD mysql -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.12</version>
+		</dependency>
+		
+		<!-- Conector ORM -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>5.0.8.RELEASE</version>
+		</dependency>
+	
+</dependencies>
 
 </project>

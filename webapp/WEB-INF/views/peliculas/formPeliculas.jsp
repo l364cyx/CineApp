@@ -3,7 +3,7 @@
 
 <!-- Tag Library para acceder a recursos estáticos -->
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-
+<!-- Tag Library para formularios -->
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <%--  Añadimos Tags JSTL Loops y Condicionales--%>
@@ -190,7 +190,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
       $(function () {
-          $("#fechaEstreno").datepicker({dateFormat: 'dd-mm-yy'});
+          $("#fechaEstreno").datepicker({dateFormat: 'dd/mm/yy'});
         }
       );
     </script>
