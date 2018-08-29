@@ -15,5 +15,24 @@ import net.itinajero.app.model.Noticia;
 public interface NoticiasRepository extends JpaRepository<Noticia, Integer> {
 	//Spring Data JPA nos ofrece otros métodos adicionales a CrudRepository
 	
-	public List<Noticia> findByFecha(Date d);
+	//Select * from Noticias
+	public List<Noticia> findBy();
+	
+	//Select * from Noticias where status = ?
+	public List<Noticia> findByEstatus(String status);
+	
+	// where fecha = ?
+	public List<Noticia> findByFecha(Date fecha);
+	
+	// where status =? and fecha = ?
+	public List<Noticia> findByEstatusAndFecha(String status, Date fecha);
+	
+	// where status =? and fecha = ?
+	public List<Noticia> findByEstatusOrFecha(String status, Date fecha);
+	
+	// where fecha between ? and ?
+	public List<Noticia> findByFechaBetween(Date fecha1, Date fecha2);
+	
+	// where fecha between ? and ?
+	public List<Noticia> findByIdBetween(int n1, int n2);
 }

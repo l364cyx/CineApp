@@ -9,17 +9,19 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import net.itinajero.app.model.Noticia;
 import net.itinajero.app.repository.NoticiasRepository;
 
-public class AppKeywordFindBy {
+public class AppKeywordOr {
 
 	public static void main(String[] args) {
+		
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("root-context.xml");
 		NoticiasRepository repo = context.getBean("noticiasRepository", NoticiasRepository.class);	
 		
-		// Ejemplo Keyword findBy
+		// Ejemplo Keyword And
+		
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");		
 		List<Noticia> lista=null;
 		try {
-			lista = repo.findByFecha(format.parse("2017-09-02"));
+			lista = repo.findByEstatusOrFecha("Activa", format.parse("2017-09-02"));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
