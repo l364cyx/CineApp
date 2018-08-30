@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 
-<!-- Tag Library para acceder a recursos estáticos -->
+<!-- Tag Library para acceder a recursos estÃ¡ticos -->
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <!-- Tag Library para formularios -->
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<%--  Añadimos Tags JSTL Loops y Condicionales--%>
+<%--  AÃ±adimos Tags JSTL Loops y Condicionales--%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
@@ -57,11 +57,25 @@
 
 
 		<form:form action="${urlForm }" method="post" enctype="multipart/form-data" modelAttribute="pelicula">
-        
+        <!-- Ya traemos el objeto pelicula, por lo tanto tambien traemos la imagen. Podemos aprovechar que ya traemos
+				la imagen de la pelicula. La mostramos en un tag <img>. Solo llamamos ${pelicula.imagen}
+			--> 
         <div class="row">
           <div class="col-sm-3">
             <div class="form-group">
-              <img class="img-rounded" src="${urlPublic }/images/${pelicula.imagen}" title="Imagen actual de la pelicula" width="150" height="200">
+              <img class="img-rounded" src="${urlPublic }/images/${pelicula.imagen}" title="${pelicula.titulo}" width="150" height="200">
+            </div>  
+          </div>
+         </div> 
+          
+           <!-- Inician los inputs del form -->
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label for="titulo">Titulo</label>
+              <form:hidden class="form-control" path="id"/>
+              <form:hidden class="form-control" path="detalle.id"/>
+              <form:input type="text" class="form-control" path="titulo" id="titulo" required="required" />
             </div>  
           </div>
           <div class="col-sm-3">
