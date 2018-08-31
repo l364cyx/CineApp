@@ -2,8 +2,11 @@ package net.itinajero.app.service;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import net.itinajero.app.model.Pelicula;
@@ -21,16 +24,28 @@ public class PeliculasServiceJPA implements IPeliculasService{
 		peliculasRepo.save(pelicula);
 		
 	}
-
+	
 	@Override
 	public List<Pelicula> buscarTodas() {
 		// TODO Auto-generated method stub
-		return null;
+		return peliculasRepo.findAll();
+	}
+
+	@Override
+	public Page<Pelicula> buscarTodas(Pageable page) {
+		// TODO Auto-generated method stub
+		return peliculasRepo.findAll(page);
 	}
 
 	@Override
 	public Pelicula buscarPorId(int idPelicula) {
-		// TODO Auto-generated method stub
+		Optional<Pelicula> optional = peliculasRepo.findById(idPelicula);
+		
+		if(optional.isPresent())
+		{
+			return optional.get();
+		}
+		
 		return null;
 	}
 
@@ -50,6 +65,14 @@ public class PeliculasServiceJPA implements IPeliculasService{
 		
 		return generos;
 	}
+
+	@Override
+	public void eliminar(int idPelicula) {
+		peliculasRepo.deleteById(idPelicula);
+		
+	}
+
+	
 
 	
 	

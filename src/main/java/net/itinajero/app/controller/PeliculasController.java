@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import net.itinajero.app.model.Pelicula;
+import net.itinajero.app.service.IDetallesService;
 import net.itinajero.app.service.IPeliculasService;
 import net.itinajero.app.util.Utileria;
 
@@ -33,19 +37,33 @@ import net.itinajero.app.util.Utileria;
 public class PeliculasController {
 	
 	@Autowired
+	private IDetallesService detallesService;
+	
+	@Autowired
 	private IPeliculasService peliculasService;
 	
-	@GetMapping(value="/index")
-	public String mostrarIndex(Model model)
+//	@GetMapping(value="/index")
+//	public String mostrarIndex(Model model)
+//	{
+//		List<Pelicula> lista = peliculasService.buscarTodas();
+//		
+//		model.addAttribute("peliculas", lista);
+//		
+//		return "peliculas/listPeliculas";
+//		
+//	}
+	
+	
+	@GetMapping(value="/indexPaginate")
+	public String mostrarIndexPaginado(Model model, Pageable page)
 	{
-		List<Pelicula> lista = peliculasService.buscarTodas();
+		Page<Pelicula> lista = peliculasService.buscarTodas(page);
 		
 		model.addAttribute("peliculas", lista);
 		
 		return "peliculas/listPeliculas";
 		
 	}
-	
 	
 	@GetMapping(value="/create")
 	public String crear(@ModelAttribute Pelicula pelicula, Model model)
@@ -58,7 +76,7 @@ public class PeliculasController {
 		 */
 		
 		
-		model.addAttribute("generos", peliculasService.buscarGeneros());
+		//model.addAttribute("generos", peliculasService.buscarGeneros());
 		
 		return "peliculas/formPeliculas";
 	}
@@ -89,7 +107,13 @@ public class PeliculasController {
 		
 		System.out.println("Recibiendo objeto pelÃ­cula " + pelicula);
 		
-		System.out.println("Elementos en la lista antes de la inserción: " + peliculasService.buscarTodas().size());
+	//	System.out.println("Elementos en la lista antes de la inserción: " + peliculasService.buscarTodas().size());
+		
+		
+		System.out.println("Antes:" + pelicula.getDetalle());
+		//Antes de insertar, insertamos el objeto detalle
+		detallesService.insertar(pelicula.getDetalle());
+		System.out.println("Despues:" + pelicula.getDetalle());
 		
 		/*
 		 * 1.Inserción nueva Película mediante DataBinding: no es necesario llamar objeto Película, 
@@ -101,7 +125,7 @@ public class PeliculasController {
 		 */
 		peliculasService.insertar(pelicula);
 		
-		System.out.println("Elementos en la lista después de la inserción: " + peliculasService.buscarTodas().size());
+		//System.out.println("Elementos en la lista después de la inserción: " + peliculasService.buscarTodas().size());
 		
 		//Esto nos permite poder enviar un mensaje antes de hacer la redirección, es temporal, al redireccionar son eliminados de la sesiÃ³n
 		attributes.addFlashAttribute("mensaje", "El registro Película fue guardado");
@@ -109,7 +133,41 @@ public class PeliculasController {
 		return "redirect:/peliculas/index";
 	}
 	
+	@GetMapping(value = "/edit/{id}")
+	public String editar(@PathVariable("id") int idPelicula, Model model)
+	{
+		Pelicula pelicula = peliculasService.buscarPorId(idPelicula);
+		model.addAttribute("pelicula", pelicula);
+		//model.addAttribute("generos", peliculasService.buscarGeneros());
+		
+		
+		return "peliculas/formPeliculas";
+	}
 
+	@GetMapping(value = "/delete/{id}")
+	public String eliminar(@PathVariable("id") int idPelicula, RedirectAttributes attributes)
+	{
+		Pelicula p = peliculasService.buscarPorId(idPelicula);
+		
+		//Primero eliminar la película
+		peliculasService.eliminar(idPelicula);
+		
+		//Despues eliminar los detalles
+		detallesService.eliminar(p.getDetalle().getId());
+		
+		attributes.addFlashAttribute("mensaje", "La Película fue eliminada");
+		
+		return "redirect:/peliculas/index";
+	}
+	
+	
+	
+	@ModelAttribute("generos")
+	public List<String> getGeneros()
+	{
+		return peliculasService.buscarGeneros();
+	}
+	
 	/*
 	 * Personalizamos el DataBinding para las propiedades de tipo Date
 	 * para que cuando da error de formato Fecha lo formatee a nuestro formato

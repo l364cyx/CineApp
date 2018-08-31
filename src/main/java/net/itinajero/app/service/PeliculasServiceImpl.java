@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import net.itinajero.app.model.Pelicula;
@@ -88,6 +90,12 @@ public class PeliculasServiceImpl implements IPeliculasService{
 		// TODO Auto-generated method stub
 		return lista;
 	}
+	
+	@Override
+	public Page<Pelicula> buscarTodas(Pageable page) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public Pelicula buscarPorId(int idPelicula) {
@@ -125,5 +133,13 @@ public class PeliculasServiceImpl implements IPeliculasService{
 		
 		return generos;
 	}
+
+	@Override
+	public void eliminar(int idPelicula) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 
 }

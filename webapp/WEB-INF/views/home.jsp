@@ -30,6 +30,10 @@
 	rel="stylesheet">
 <link href="${urlPublic }/bootstrap/css/theme.css" rel="stylesheet">
 
+<!-- MAPBOX JS (MAPAS) -->
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.css' rel='stylesheet' />
+
 </head>
 
 <body>
@@ -242,6 +246,16 @@
 			</div>
 
 		</div>
+
+		<!--  CODIGO MAPBOX MAPA -->
+		<div id='map' style='width: 800px; height: 600px;'></div>
+		<script>
+			mapboxgl.accessToken = 'pk.eyJ1Ijoicm1nYXJjaWExNzg5IiwiYSI6ImNqZnB0dnJmMzAxc3QzM3Q3anVoajV0Y2sifQ.iS_yF91bqOh47dkygX9_Gw';
+			var map = new mapboxgl.Map({
+				container : 'map',
+				style : 'mapbox://styles/mapbox/navigation-preview-night-v2'
+			});
+		</script>
 
 		<!-- Incluímos Fichero jsp-->
 		<jsp:include page="includes/footer.jsp"></jsp:include>

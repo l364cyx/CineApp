@@ -24,7 +24,13 @@
     <!-- Variable al modelo con la URL relativa a resources -->
 	<spring:url value="/resources" var="urlPublic" />
 	
+	<spring:url value="/peliculas" var="urlPeliculas" />
+	
 	<spring:url value="/peliculas/create" var="urlCreate" />
+	
+	<spring:url value="/peliculas/edit" var="urlEdit" />
+	
+	<spring:url value="/peliculas/delete" var="urlDelete" />
 	
     <link href="${urlPublic }/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${urlPublic }/bootstrap/css/theme.css" rel="stylesheet">
@@ -58,7 +64,7 @@
                 <th>Estatus</th>
                 <th>Opciones</th>
             </tr>
-            <c:forEach items="${ peliculas}" var="pelicula">
+            <c:forEach items="${ peliculas.content}" var="pelicula">
 	            <tr>
 	                <td>${pelicula.titulo }</td>
 	                <td>${pelicula.genero }</td>
@@ -75,14 +81,26 @@
 					</c:choose>
 						
 	                <td>
-	                    <a href="#" class="btn btn-success btn-sm" role="button" title="Edit" ><span class="glyphicon glyphicon-pencil"></span></a>
-	                    <a href="#" class="btn btn-danger btn-sm" role="button" title="Eliminar" ><span class="glyphicon glyphicon-trash"></span></a>
+	                    <a href="${urlEdit}/${pelicula.id }" class="btn btn-success btn-sm" role="button" title="Edit" ><span class="glyphicon glyphicon-pencil"></span></a>
+	                    <a href="${urlDelete}/${pelicula.id }" onclick=' return confirm("¿Estas Seguro?")' class="btn btn-danger btn-sm" role="button" title="Eliminar" ><span class="glyphicon glyphicon-trash"></span></a>
 	                </td>
 	            </tr>
             </c:forEach> 
             
         </table>
-      </div>
+        
+        <!-- Links de paginacion -->
+		<nav aria-label="">
+			<ul class="pager">
+				<li><a
+					href="${urlPeliculas}/indexPaginate?page=${peliculas.number - 1 }">Anterior</a></li>
+				<li><a
+					href="${urlPeliculas}/indexPaginate?page=${peliculas.number + 1 }">Siguiente</a></li>
+			</ul>
+		</nav>
+
+
+		</div>
           
       <hr class="featurette-divider">
 
