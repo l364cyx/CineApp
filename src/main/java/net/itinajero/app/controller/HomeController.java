@@ -42,7 +42,7 @@ public class HomeController
 	@Autowired
 	private IHorariosService serviceHorarios;
 	
-
+	@Autowired
 	private INoticiasService serviceNoticias;
 	
 	
@@ -133,7 +133,7 @@ public class HomeController
 	
 	
 	
-	//Disponible en cualquier parte
+	//Disponible en cualquier parte en el Controlador
 	@ModelAttribute("noticias")
 	public List<Noticia> getNoticias(){
 		return serviceNoticias.buscarUltimas();
