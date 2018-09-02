@@ -9,6 +9,11 @@
 	  <tracking-mode>COOKIE</tracking-mode>
 	</session-config>
 
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/views/error/404.jsp</location>
+	</error-page>
+
 
 	<servlet>
 		<servlet-name>springmvc</servlet-name>

@@ -176,7 +176,7 @@ public class PeliculasController {
 	public void initBinder(WebDataBinder binder) 
 	{
 		//Controlamos el error de formato de Fecha ya que por defecto coge el formato de fecha del sistema dd/mm/yyyy
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
 	}
 }

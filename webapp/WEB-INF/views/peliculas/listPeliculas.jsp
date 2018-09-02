@@ -64,7 +64,7 @@
                 <th>Estatus</th>
                 <th>Opciones</th>
             </tr>
-            <c:forEach items="${ peliculas.content}" var="pelicula">
+            <c:forEach items="${ peliculas.content}" var="pelicula">  
 	            <tr>
 	                <td>${pelicula.titulo }</td>
 	                <td>${pelicula.genero }</td>

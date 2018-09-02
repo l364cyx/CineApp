@@ -1,10 +1,12 @@
 package net.itinajero.app.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import net.itinajero.app.model.Noticia;
 
-@Service
+//@Service
 public class NoticiasServiceImpl implements INoticiasService{
 
 	// Constructor vacio. Unicamente para imprimir un mensaje al crearse una instancia
@@ -18,6 +20,12 @@ public class NoticiasServiceImpl implements INoticiasService{
 			//Imprimir el objeto noticia
 			System.out.println("Guardando el objeto " + noticia + "en la base de datos");
 		
+	}
+
+	@Override
+	public List<Noticia> buscarUltimas() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -68,7 +68,7 @@
 
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title"><span class="label label-success">20-05-2017</span></h3>
+						<h3 class="panel-title"><span class="label label-success">${fechaBusqueda }</span></h3>
 					</div>
 					<div class="panel-body">
 						<table class="table table-striped">
@@ -79,43 +79,20 @@
 									<th>Precio</th>                                  
 								</tr>
 							</thead>
-							<tbody>             
-								<tr>                 
-									<td>16:00</td>
-									<td>Sala 1</td>  
-									<td>$10</td>  
-								</tr>              
-								<tr>                 
-									<td>18:00</td>
-									<td>Sala 1</td> 
-									<td>$10</td>  
-								</tr>              
-								<tr>                 
-									<td>20:00</td>
-									<td>Sala 1</td>                        
-									<td>$10</td>  
-								</tr>              
-								<tr>                
-									<td>14:00</td>
-									<td>Sala 1</td>                       
-									<td>$10</td>  
-								</tr>              
-								<tr>               
-									<td>16:00</td>
-									<td>Sala 1</td> 
-									<td>$10</td>  
-								</tr>                             
-								<tr>                  
-									<td>20:00</td>
-									<td>Sala 1</td> 
-									<td>$10</td>  
-								</tr>              
-								<tr>                 
-									<td>22:00</td>
-									<td>Sala 1</td>  
-									<td>$10</td>  
-								</tr>              
-							</tbody>           
+							<tbody>
+
+								<c:forEach items="${horarios }" var="horario">
+	
+									<tr>
+										<td>${ horario.hora }</td>
+										<td>${ horario.sala }</td>
+										<td>${ horario.precio }</td>
+	
+									</tr>
+	
+								</c:forEach>
+
+						</tbody>           
 						</table>
 					</div>
 				</div>

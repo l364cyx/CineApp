@@ -21,7 +21,7 @@ public class Utileria {
 	 * @return
 	 */
 	public static List<String> getNextDays(int count) {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		// Today's Date
 		Date start = new Date();
 		Calendar cal = Calendar.getInstance();

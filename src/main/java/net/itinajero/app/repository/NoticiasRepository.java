@@ -11,7 +11,6 @@ import net.itinajero.app.model.Noticia;
 
 @Repository//Crea un Bean en nuestro contenedor de Beans. Con esto le decimos a Spring que cree un Bean para operaciones con BD
 //public interface NoticiasRepository extends CrudRepository<Noticia, Integer> { //<ENTIDADAD, TIPO CLAVE PRIMARIA>
-
 public interface NoticiasRepository extends JpaRepository<Noticia, Integer> {
 	//Spring Data JPA nos ofrece otros métodos adicionales a CrudRepository
 	
@@ -35,4 +34,7 @@ public interface NoticiasRepository extends JpaRepository<Noticia, Integer> {
 	
 	// where fecha between ? and ?
 	public List<Noticia> findByIdBetween(int n1, int n2);
+
+	// select * from Noticias where estatus = ? order by id desc limit 3
+	public List<Noticia> findTop3ByEstatusOrderByIdDesc(String string);
 }
