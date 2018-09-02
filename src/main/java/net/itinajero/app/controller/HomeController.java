@@ -64,18 +64,25 @@ public class HomeController
 	@RequestMapping(value="/", method=RequestMethod.GET)//borrar fichero index.jsp para que cargue nuestro jsp home.jsp
 	public String mostrarPrincipal(Model model)
 	{
-		List<String> listaFechas = Utileria.getNextDays(60);
+		Date fechaSinHora;
+		try {
+			
+			fechaSinHora = df.parse(df.format(new Date()));
+			List<String> listaFechas = Utileria.getNextDays(4);
+			List<Pelicula> peliculas = servicePeliculas.buscarPorFecha(fechaSinHora);
+
+			model.addAttribute("fechas", listaFechas);
+			model.addAttribute("fechaBusqueda", df.format(new Date()));
+			model.addAttribute("peliculas", peliculas);
+			
+			//Agragar al modelo listado de Banners para desplegarlo
+//			List<Banner> banners = bannersService.buscarTodos();
+					
+//			model.addAttribute("banners", banners);
 		
-		List<Pelicula> peliculas = servicePeliculas.buscarTodas();
-		
-		//Agragar al modelo listado de Banners para desplegarlo
-		List<Banner> banners = bannersService.buscarTodos();
-				
-		model.addAttribute("fechaBusqueda", df.format(new Date()));
-		model.addAttribute("peliculas", peliculas);
-		model.addAttribute("fechas", listaFechas);
-		model.addAttribute("banners", banners);
-		
+		} catch (ParseException e) {
+			System.out.println("Error: HomeController.mostrarPrincipal" + e.getMessage());
+		}
 		
 		return "home";//nombre de la vista
 	}
@@ -84,22 +91,25 @@ public class HomeController
 	@RequestMapping(value="/search", method=RequestMethod.POST)
 	public String buscar(@RequestParam("fecha")  String fecha, Model model)
 	{
-		System.out.println("Buscando todas las películas en exhibición para la fecha: " + fecha);
+		Date fechaSinHora;
+		try {
+			
+			fechaSinHora = df.parse(df.format(fecha));
+			List<String> listaFechas = Utileria.getNextDays(4);
+			//Agragar al modelo listado de Películas para desplegarlo
+			List<Pelicula> peliculas = servicePeliculas.buscarPorFecha(fechaSinHora);
+			model.addAttribute("fechas", listaFechas);
+			// Regresamos la fecha que selecciono el usuario con el mismo formato
+			model.addAttribute("fechaBusqueda", df.format(fecha));
+			model.addAttribute("peliculas", peliculas);
+			
+			//Agragar al modelo listado de Banners para desplegarlo
+			//List<Banner> banners = bannersService.buscarTodos();
+//			model.addAttribute("banners", banners);
 		
-		List<String> listaFechas = Utileria.getNextDays(60);
-		
-		//Agragar al modelo listado de Películas para desplegarlo
-		List<Pelicula> peliculas = servicePeliculas.buscarTodas();
-		
-		//Agragar al modelo listado de Banners para desplegarlo
-		List<Banner> banners = bannersService.buscarTodos();
-		
-		model.addAttribute("fechaBusqueda", fecha);
-		model.addAttribute("peliculas", peliculas);
-		model.addAttribute("fechas", listaFechas);
-		model.addAttribute("banners", banners);
-		
-		
+		} catch (ParseException e) {
+			System.out.println("Error: HomeController.buscar" + e.getMessage());
+		}
 		
 		return "home";//nombre de la vista
 	}
@@ -114,13 +124,16 @@ public class HomeController
 //		return "detalle";//nombre de la vista
 //	}
 	
+	/**
+	 * Metodo para ver los detalles y horarios de una pelicula
+	 * @param idPelicula
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value="/detalle/{id}/{fecha}", method=RequestMethod.GET)
 	public String mostrarDetalle(Model model, @PathVariable("id") int idPelicula, @PathVariable("fecha") Date fecha)
 	{
-		System.out.println("Buscando Horarios para la Pelicula: " + idPelicula);
-		System.out.println("Para la Fecha: " + fecha);
 
-		
 		List<Horario> horarios = serviceHorarios.buscarPorIdPelicula(idPelicula, fecha);
 		
 		model.addAttribute("horarios", horarios);
@@ -130,7 +143,20 @@ public class HomeController
 		return "detalle";//nombre de la vista
 	}
 	
+	/**
+	 * Metodo que muestra la vista de la pagina de Acerca
+	 * @return
+	 */
+	@RequestMapping(value = "/about")
+	public String mostrarAcerca() {			
+		return "acerca";
+	}
 	
+	
+	@ModelAttribute("banners")
+	public List<Banner> getBanners(){
+		return bannersService.buscarActivos();
+	}
 	
 	
 	//Disponible en cualquier parte en el Controlador

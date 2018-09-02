@@ -2,6 +2,7 @@ package net.itinajero.app.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -138,6 +139,18 @@ public class PeliculasServiceImpl implements IPeliculasService{
 	public void eliminar(int idPelicula) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<Pelicula> buscarActivas() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Pelicula> buscarPorFecha(Date fecha) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

@@ -1,5 +1,6 @@
 package net.itinajero.app.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -15,4 +16,8 @@ public interface IPeliculasService
 	List<String> buscarGeneros();
 	void eliminar(int idPelicula);
 	Page<Pelicula> buscarTodas(Pageable page);
+	
+	// Con este metodo traemos las peliculas Activas. Para formar el select de Peliculas del FORM de nuevo Horario.
+    List<Pelicula> buscarActivas();	
+	List<Pelicula> buscarPorFecha(Date fecha);
 }
