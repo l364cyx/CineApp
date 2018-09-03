@@ -6,9 +6,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import net.itinajero.app.model.Horario;
-
+@Repository
 public interface HorariosRepository extends JpaRepository<Horario, Integer> {
 
 	// Horarios por idPelicula (Pelicula.id = Pelicula_Id and fecha=?)
@@ -20,4 +21,19 @@ public interface HorariosRepository extends JpaRepository<Horario, Integer> {
 		 */
 		@Query("select h from Horario h where h.fecha = :fecha and pelicula.estatus='Activa' group by h.pelicula order by pelicula.id asc")
 		public List<Horario> findByFecha(@Param("fecha") Date fecha);
+	 
+/*		
+		Sentencia SQL que se generaría internamente...
+		
+		select h.*
+		from Horarios h
+		inner join Peliculas p
+		where h.idPelicula = p.id
+		and h.fecha = ?
+		and p.estatus='Activa'
+		group by h.idPelicula
+		order by h.idPelicula asc;
+		
+		 */
 }
+

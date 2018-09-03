@@ -30,8 +30,8 @@ import net.itinajero.app.service.IPeliculasService;
 import net.itinajero.app.util.Utileria;
 
 @Controller
-public class HomeController 
-{
+public class HomeController{
+	
 	//Con esta anotación Spring inyecta automáticamente la instancia de nuestra clase al arrancar la aplicación
 	@Autowired
 	private IPeliculasService servicePeliculas;
@@ -64,11 +64,11 @@ public class HomeController
 	@RequestMapping(value="/", method=RequestMethod.GET)//borrar fichero index.jsp para que cargue nuestro jsp home.jsp
 	public String mostrarPrincipal(Model model)
 	{
-		Date fechaSinHora;
+		
 		try {
 			
-			fechaSinHora = df.parse(df.format(new Date()));
-			List<String> listaFechas = Utileria.getNextDays(4);
+			Date fechaSinHora = df.parse(df.format(new Date()));
+			List<String> listaFechas = Utileria.getNextDays(60);
 			List<Pelicula> peliculas = servicePeliculas.buscarPorFecha(fechaSinHora);
 
 			model.addAttribute("fechas", listaFechas);
@@ -89,13 +89,13 @@ public class HomeController
 	
 	//@PostMapping(value="/search")
 	@RequestMapping(value="/search", method=RequestMethod.POST)
-	public String buscar(@RequestParam("fecha")  String fecha, Model model)
+	public String buscar(@RequestParam("fecha")  Date fecha, Model model)
 	{
-		Date fechaSinHora;
+		
 		try {
 			
-			fechaSinHora = df.parse(df.format(fecha));
-			List<String> listaFechas = Utileria.getNextDays(4);
+			Date fechaSinHora = df.parse(df.format(fecha));
+			List<String> listaFechas = Utileria.getNextDays(60);
 			//Agragar al modelo listado de Películas para desplegarlo
 			List<Pelicula> peliculas = servicePeliculas.buscarPorFecha(fechaSinHora);
 			model.addAttribute("fechas", listaFechas);
@@ -106,7 +106,7 @@ public class HomeController
 			//Agragar al modelo listado de Banners para desplegarlo
 			//List<Banner> banners = bannersService.buscarTodos();
 //			model.addAttribute("banners", banners);
-		
+		return "home";
 		} catch (ParseException e) {
 			System.out.println("Error: HomeController.buscar" + e.getMessage());
 		}

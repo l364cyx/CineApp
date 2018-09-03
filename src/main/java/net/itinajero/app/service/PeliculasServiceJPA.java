@@ -19,10 +19,11 @@ import net.itinajero.app.repository.PeliculasRepository;
 public class PeliculasServiceJPA implements IPeliculasService{
 
 	@Autowired
+	private HorariosRepository horariosRepo;
+
+	@Autowired
 	private PeliculasRepository peliculasRepo;
 	
-	@Autowired
-	private HorariosRepository horariosRepo;
 	
 	@Override
 	public void insertar(Pelicula pelicula) {

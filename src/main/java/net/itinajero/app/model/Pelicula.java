@@ -38,14 +38,21 @@ public class Pelicula {
 	 * Con la constante EAGER le decimos que cada vez que consultemos un registro de tipo Pelicula queremos que también se ejecute una consulta 
 	 * en la tabla Horarios para traernos todos los horarios que pertenezcan a la Película que estamos consultando.
 	 */
-	@OneToMany(mappedBy="pelicula", fetch= FetchType.EAGER)
-	private List<Horario> horarios;
+//	@OneToMany(mappedBy="pelicula", fetch= FetchType.EAGER)
+//	private List<Horario> horarios;
 	
-	public List<Horario> getHorarios() {
-		return horarios;
-	}
-	public void setHorarios(List<Horario> horarios) {
-		this.horarios = horarios;
+//	public List<Horario> getHorarios() {
+//		return horarios;
+//	}
+//	public void setHorarios(List<Horario> horarios) {
+//		this.horarios = horarios;
+//	}
+	
+	/**
+	 * Constructor sin parametros
+	 */
+	public Pelicula() {
+
 	}
 	public int getId() {
 		return id;

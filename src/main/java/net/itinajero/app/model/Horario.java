@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name="Horarios")
@@ -21,11 +20,11 @@ public class Horario {
 	private Date fecha;
 	private String hora; // HH:mm
 	private String sala; 
-	private double precio =7.5;
+	private double precio;
 	
 	//@Transient
 	@ManyToOne
-	@JoinColumn(name = "idPelicula")
+	@JoinColumn(name = "idPelicula")// foreignKey en la tabla de Horarios
 	private Pelicula pelicula;
 
 	public Horario() { }

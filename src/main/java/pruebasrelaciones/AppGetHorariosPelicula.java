@@ -20,7 +20,7 @@ public class AppGetHorariosPelicula {
 
 		Optional<Pelicula> optional = repo.findById(7);
 		
-		System.out.println(optional.get().getHorarios().size());
+//		System.out.println(optional.get().getHorarios().size());
 		
 		context.close();
 
