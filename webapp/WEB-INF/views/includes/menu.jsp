@@ -27,6 +27,7 @@
 				<li><a href="${urlRoot }banners/index">Banners</a></li>
 				<li><a href="${urlRoot }about">Acerca</a></li>
 				<li><a href="${urlRoot }contacto">Contacto</a></li>
+				<li><a href="${urlRoot }admin/logout">Salir</a></li>
 				<li><a href="#">Login</a></li>
 			</ul>
 		</div>
