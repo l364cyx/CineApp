@@ -4,41 +4,42 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
 	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
-		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.8.xsd">
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/data/jpa 
+		http://www.springframework.org/schema/data/jpa/spring-jpa-1.8.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
-	<!-- Namespace de Autoescaneo de las clases de Servicio -->
+   <!-- Le decimos a Spring MVC que detecte automaticamente todos los Beans de tipo @Service -->
 	<context:component-scan base-package="net.itinajero.app.service" />
 
 	<!-- Integración Spring Data JPA -->
+	<!-- Paquete donde estan los repositorios (interfaces que extienden JpaRepository) -->	
 	<jpa:repositories base-package="net.itinajero.app.repository" />
 	
-		<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-			<property name="driverClassName"
-				value="com.mysql.jdbc.Driver" />
-			<property name="url"
-				value="jdbc:mysql://192.168.87.8:3306/cineapp?useSSL=false" />
-<!-- 				value="jdbc:mysql://192.168.88.155:3306/cineapp?useSSL=false" /> -->
-				<!-- value="jdbc:mysql://localhost:3306/cineapp?useSSL=false" /> -->
-			<property name="username" value="root" />
-			<property name="password" value="Eufimide$1" />
-		</bean>
-		<bean id="jpaVendorAdapter"	class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-			<property name="generateDdl" value="false" />
-			<property name="showSql" value="true"></property>
-			<property name="databasePlatform"
-				value="org.hibernate.dialect.MySQL5Dialect" />
-		</bean>
-		<bean id="entityManagerFactory"	class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-			<property name="packagesToScan"
-				value="net.itinajero.app.model" />
-			<property name="dataSource" ref="dataSource" />
-			<property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
-		</bean>
-		<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-			<property name="entityManagerFactory"
-				ref="entityManagerFactory" />
-		</bean>
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://192.168.87.8:3306/cineapp?useSSL=false" />
+		<property name="username" value="root" />
+		<property name="password" value="Eufimide$1" />
+	</bean>
+	
+	<bean id="jpaVendorAdapter"	class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+		<property name="generateDdl" value="false" />
+		<property name="showSql" value="true"></property>
+		<property name="databasePlatform" value="org.hibernate.dialect.MySQL5Dialect" />
+	</bean>
+	<bean id="entityManagerFactory"	class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="packagesToScan"	value="net.itinajero.app.model" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
+	</bean>
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
 
 </beans>

@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
-		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
 
+	<!-- Le decimos a Spring MVC que detecte automaticamente todos los Beans de tipo @Controller-->
 	<context:component-scan base-package="net.itinajero.app.controller" />
+
+	<!-- Necesario para poder utilizar MVC con Anotaciones -->
+	<!-- 
+	<mvc:annotation-driven />
+	 -->
 
 	<!-- Integración de paginación por default -->
 	<mvc:annotation-driven>
@@ -17,9 +28,8 @@
 			</bean>
 		</mvc:argument-resolvers>
 	</mvc:annotation-driven>
-	
-	<bean id="viewResolver"
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- Le indicamos a Spring MVC a donde debera ir a buscar las vistas (JSPs) -->
+	<bean id="viewResolver"	class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix">
 			<value>/WEB-INF/views/</value>
 		</property>
@@ -28,9 +38,9 @@
 		</property>
 	</bean>
 	
-	<!-- Acceso a Recursos Estáticos -->
+	<!-- Para habilitar los recursos estaticos (js, css, images) -->
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 
-	<!-- Bean para soportar Multipath (upload file) -->
+	<!-- Bean para soportar Multipath (upload fileS) -->
 	<bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver" />
 </beans>

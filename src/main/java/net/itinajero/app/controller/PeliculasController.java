@@ -1,7 +1,5 @@
 package net.itinajero.app.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -36,35 +34,44 @@ import net.itinajero.app.util.Utileria;
 @RequestMapping(value="/peliculas")
 public class PeliculasController {
 	
+	// Inyectamos una instancia desde nuestro Root ApplicationContext
 	@Autowired
 	private IDetallesService detallesService;
 	
+	// Inyectamos una instancia desde nuestro Root ApplicationContext
 	@Autowired
 	private IPeliculasService peliculasService;
 	
-//	@GetMapping(value="/index")
-//	public String mostrarIndex(Model model)
-//	{
-//		List<Pelicula> lista = peliculasService.buscarTodas();
-//		
-//		model.addAttribute("peliculas", lista);
-//		
-//		return "peliculas/listPeliculas";
-//		
-//	}
 	
-	
-	@GetMapping(value="/indexPaginate")
-	public String mostrarIndexPaginado(Model model, Pageable page)
-	{
-		Page<Pelicula> lista = peliculasService.buscarTodas(page);
-		
+	/**
+	 * Metodo que muestra la lista de peliculas
+	 * @param model
+	 * @return
+	 */
+	@GetMapping(value = "/index")
+	public String mostrarIndex(Model model) {
+		List<Pelicula> lista = peliculasService.buscarTodas();
 		model.addAttribute("peliculas", lista);
-		
 		return "peliculas/listPeliculas";
-		
 	}
 	
+	/**
+	 * Metodo que muestra la lista de peliculas con paginacion
+	 * @param model
+	 * @param page
+	 * @return
+	 */
+	@GetMapping(value = "/indexPaginate")
+	public String mostrarIndexPaginado(Model model, Pageable page) {
+		Page<Pelicula> lista = peliculasService.buscarTodas(page);
+		model.addAttribute("peliculas", lista);
+		return "peliculas/listPeliculas";
+	}
+	
+	/**
+	 * Metodo para mostrar el formulario para crear una pelicula
+	 * @return
+	 */
 	@GetMapping(value="/create")
 	public String crear(@ModelAttribute Pelicula pelicula, Model model)
 	{
@@ -81,6 +88,15 @@ public class PeliculasController {
 		return "peliculas/formPeliculas";
 	}
 
+	/**
+	 * Metodo para guardar los datos de la pelicula (CON ARCHIVO DE IMAGEN)
+	 * @param pelicula
+	 * @param result
+	 * @param model
+	 * @param multiPart
+	 * @param request
+	 * @return
+	 */
 	@PostMapping(value="/save")
 	public String guardar(@ModelAttribute Pelicula pelicula, //Data Binding:Pelicula  no es necesario crear ni llamar a objeto Pelicula
 							BindingResult result, //Control de Errores en Data Binding
@@ -102,18 +118,14 @@ public class PeliculasController {
 		if (!multiPart.isEmpty()) {
 			String nombreImagen = Utileria.guardarImagen(multiPart,request);
 			System.out.println("Nombre de la imagen: " + nombreImagen);
-			pelicula.setImagen(nombreImagen);
+			if (nombreImagen!=null){ // La imagen si se subio				
+				pelicula.setImagen(nombreImagen); // Asignamos el nombre de la imagen
+			}
 		}
-		
-		System.out.println("Recibiendo objeto pelÃ­cula " + pelicula);
-		
-	//	System.out.println("Elementos en la lista antes de la inserción: " + peliculasService.buscarTodas().size());
-		
-		
-		System.out.println("Antes:" + pelicula.getDetalle());
-		//Antes de insertar, insertamos el objeto detalle
+
+		// Primero insertamos el detalle
 		detallesService.insertar(pelicula.getDetalle());
-		System.out.println("Despues:" + pelicula.getDetalle());
+		
 		
 		/*
 		 * 1.Inserción nueva Película mediante DataBinding: no es necesario llamar objeto Película, 
@@ -123,16 +135,22 @@ public class PeliculasController {
 		 * 2.peliculasService: con @Autowired hacemos Inyección de Dependencias de una clase de servicio en un Controlador
 		 * 
 		 */
+		// Como el Detalle ya tiene id, ya podemos guardar la pelicula
 		peliculasService.insertar(pelicula);
-		
-		//System.out.println("Elementos en la lista después de la inserción: " + peliculasService.buscarTodas().size());
 		
 		//Esto nos permite poder enviar un mensaje antes de hacer la redirección, es temporal, al redireccionar son eliminados de la sesiÃ³n
 		attributes.addFlashAttribute("mensaje", "El registro Película fue guardado");
 		
-		return "redirect:/peliculas/index";
+//		return "redirect:/peliculas/index";
+		return "redirect:/peliculas/indexPaginate";	
 	}
 	
+	/**
+	 * Metodo que muestra el formulario para editar una pelicula
+	 * @param idPelicula
+	 * @param model
+	 * @return
+	 */
 	@GetMapping(value = "/edit/{id}")
 	public String editar(@PathVariable("id") int idPelicula, Model model)
 	{
@@ -144,33 +162,45 @@ public class PeliculasController {
 		return "peliculas/formPeliculas";
 	}
 
+	/**
+	 * Metodo para eliminar una pelicula
+	 * @param idPelicula
+	 * @param attributes
+	 * @return
+	 */
 	@GetMapping(value = "/delete/{id}")
 	public String eliminar(@PathVariable("id") int idPelicula, RedirectAttributes attributes)
 	{
+		// Buscamos primero la pelicula
 		Pelicula p = peliculasService.buscarPorId(idPelicula);
 		
-		//Primero eliminar la película
+		// Eliminamos la pelicula. Tambien al borrar la pelicula, se borraran los Horarios (ON CASCADE DELETE)
 		peliculasService.eliminar(idPelicula);
 		
-		//Despues eliminar los detalles
+		// Eliminamos el registro del detalle
 		detallesService.eliminar(p.getDetalle().getId());
 		
 		attributes.addFlashAttribute("mensaje", "La Película fue eliminada");
 		
-		return "redirect:/peliculas/index";
+//		return "redirect:/peliculas/index";
+		return "redirect:/peliculas/indexPaginate";
 	}
 	
 	
-	
+	/**
+	 * Agregamos al Model la lista de Generos: De esta forma nos evitamos agregarlos en los metodos
+	 * crear y editar. 
+	 * @return
+	 */
 	@ModelAttribute("generos")
 	public List<String> getGeneros()
 	{
 		return peliculasService.buscarGeneros();
 	}
 	
-	/*
-	 * Personalizamos el DataBinding para las propiedades de tipo Date
-	 * para que cuando da error de formato Fecha lo formatee a nuestro formato
+	/**
+	 * Personalizamos el Data Binding para todas las propiedades de tipo Date
+	 * @param webDataBinder
 	 */
 	@InitBinder
 	public void initBinder(WebDataBinder binder) 

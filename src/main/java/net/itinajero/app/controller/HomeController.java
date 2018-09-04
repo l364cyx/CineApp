@@ -1,10 +1,8 @@
 package net.itinajero.app.controller;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,15 +31,19 @@ import net.itinajero.app.util.Utileria;
 public class HomeController{
 	
 	//Con esta anotación Spring inyecta automáticamente la instancia de nuestra clase al arrancar la aplicación
+	// Inyectamos una instancia desde nuestro Root ApplicationContext
 	@Autowired
 	private IPeliculasService servicePeliculas;
 	
+	// Inyectamos una instancia desde nuestro Root ApplicationContext
 	@Autowired
 	private IBannersService bannersService;
 	
+	// Inyectamos una instancia desde nuestro Root ApplicationContext
 	@Autowired
 	private IHorariosService serviceHorarios;
 	
+	// Inyectamos una instancia desde nuestro Root ApplicationContext
 	@Autowired
 	private INoticiasService serviceNoticias;
 	
@@ -87,6 +89,12 @@ public class HomeController{
 		return "home";//nombre de la vista
 	}
 	
+	/**
+	 * Metodo para filtrar las peliculas por fecha
+	 * @param fecha
+	 * @param model
+	 * @return
+	 */
 	//@PostMapping(value="/search")
 	@RequestMapping(value="/search", method=RequestMethod.POST)
 	public String buscar(@RequestParam("fecha")  Date fecha, Model model)
@@ -102,11 +110,12 @@ public class HomeController{
 			// Regresamos la fecha que selecciono el usuario con el mismo formato
 			model.addAttribute("fechaBusqueda", df.format(fecha));
 			model.addAttribute("peliculas", peliculas);
+
+			return "home";
 			
 			//Agragar al modelo listado de Banners para desplegarlo
 			//List<Banner> banners = bannersService.buscarTodos();
 //			model.addAttribute("banners", banners);
-		return "home";
 		} catch (ParseException e) {
 			System.out.println("Error: HomeController.buscar" + e.getMessage());
 		}
@@ -133,7 +142,7 @@ public class HomeController{
 	@RequestMapping(value="/detalle/{id}/{fecha}", method=RequestMethod.GET)
 	public String mostrarDetalle(Model model, @PathVariable("id") int idPelicula, @PathVariable("fecha") Date fecha)
 	{
-
+		// TODO - Buscar en la base de datos los horarios.
 		List<Horario> horarios = serviceHorarios.buscarPorIdPelicula(idPelicula, fecha);
 		
 		model.addAttribute("horarios", horarios);
@@ -165,12 +174,9 @@ public class HomeController{
 		return serviceNoticias.buscarUltimas();
 	}
 	
-	
-	
-	
-	/*
-	 * Personalizamos el DataBinding para las propiedades de tipo Date
-	 * para que cuando da error de formato Fecha lo formatee a nuestro formato
+	/**
+	 * Metodo para personalizar el Data Binding para los atributos de tipo Date
+	 * @param webDataBinder
 	 */
 	@InitBinder
 	public void initBinder(WebDataBinder binder) 

@@ -1,3 +1,6 @@
+/**
+ * Clase de modelo para el Data Binding del formulario de contacto.
+ */
 package net.itinajero.app.model;
 
 import java.util.Arrays;
@@ -13,6 +16,13 @@ public class Contacto {
 	private List<String> notificaciones;
 	private String comentarios;
 
+	/**
+	 * Constructor sin parametros
+	 */
+	public Contacto() {
+	
+	}
+	
 	public int getId() {
 		return id;
 	}

@@ -1,3 +1,6 @@
+/**
+ *  Clase de modelo que representa un horario para una determinada pelicula.
+ */
 package net.itinajero.app.model;
 
 import java.util.Date;
@@ -15,18 +18,22 @@ import javax.persistence.Table;
 public class Horario {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)//Auto-incrementable
+	@GeneratedValue(strategy=GenerationType.IDENTITY) // auto_increment MySQL
 	private int id;
 	private Date fecha;
-	private String hora; // HH:mm
+	private String hora; 
 	private String sala; 
 	private double precio;
 	
+	// Relacion Muchos a Uno -> Muchos horarios para una pelicula
 	//@Transient
 	@ManyToOne
-	@JoinColumn(name = "idPelicula")// foreignKey en la tabla de Horarios
+	@JoinColumn(name = "idPelicula") // foreignKey en la tabla de Horarios
 	private Pelicula pelicula;
 
+	/**
+	 * Constructor sin parametros
+	 */
 	public Horario() { }
 
 	public int getId() {

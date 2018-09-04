@@ -3,27 +3,26 @@ package net.itinajero.app.service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import net.itinajero.app.model.Horario;
 import net.itinajero.app.repository.HorariosRepository;
 
+// Registramos esta clase como un Bean en nuestro Root ApplicationContext.
 @Service
 public class HorariosServiceJPA implements IHorariosService{
-
-	@Autowired //inyectamos dependencia
+	
+	// Inyectamos una instancia desde nuestro Root ApplicationContext.
+    @Autowired
 	private HorariosRepository horariosRepo;
 	
 	@Override
 	public List<Horario> buscarPorIdPelicula(int idPelicula, Date fecha) {
-		
-		return horariosRepo.findByPelicula_IdAndFechaOrderByHora(idPelicula, fecha);
+		return horariosRepo.findByPelicula_IdAndFechaOrderByHora(idPelicula,fecha);		
 	}
-	
+
 	@Override
 	public void insertar(Horario horario) {
 		horariosRepo.save(horario);
@@ -52,5 +51,4 @@ public class HorariosServiceJPA implements IHorariosService{
 			return optional.get();
 		return null;
 	}
-
 }

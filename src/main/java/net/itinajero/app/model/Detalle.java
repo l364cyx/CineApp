@@ -1,3 +1,6 @@
+/**
+ * Clase de modelo que representa los detalles extras de una pelicula.
+ */
 package net.itinajero.app.model;
 
 import javax.persistence.Entity;
@@ -11,13 +14,16 @@ import javax.persistence.Table;
 public class Detalle {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) //Autoincremental
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment MySQL
 	private int id;
 	private String director;
 	private String actores;
 	private String sinopsis;
-	private String trailer;
+	private String trailer;  // url del video de YouTube
 	
+	/**
+	 * Constructor sin parametros
+	 */
 	public Detalle() {
 		//System.out.println("Constructor Detalle");
 	}

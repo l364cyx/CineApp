@@ -19,10 +19,10 @@ public class Banner {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY) // auto_increment MySQL
 	private int id;
-	private String titulo;
-	private Date fecha; // Fecha de Publicacion del Banner
+	private String titulo; // titulo para indicar el atributo title <img src='' title='?' />
+	private Date fecha; // fecha de publicacion de la imagen
 	private String archivo; // atributo para guardar el nombre de la imagen
-	private String estatus;
+	private String estatus; // posibles valores: Activo, Inactivo 
 	
 	/**
 	 * Constructor de la clase

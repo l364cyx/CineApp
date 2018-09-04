@@ -1,3 +1,6 @@
+/**
+ *  Clase de modelo que representa una noticia en la seccion Noticias / Novedades de la pagina principal
+ */
 package net.itinajero.app.model;
 
 import java.util.Date;
@@ -13,16 +16,16 @@ import javax.persistence.Table;
 public class Noticia {
 
 	@Id
-	@GeneratedValue(strategy =GenerationType.IDENTITY) //Para Oracle es SEQUENCE
+	@GeneratedValue(strategy =GenerationType.IDENTITY) // auto_increment MySQL
 	private int id;
 	private String titulo;
 	private Date fecha;
 	private String detalle;
-	private String estatus;
+	private String estatus;// posibles valores: Activa, Inactiva
 	
 	public Noticia(){
-		this.fecha = new Date();
-		this.estatus="Activa";
+		this.fecha = new Date(); // por default la fecha del sistema
+		this.estatus="Activa"; // por default la noticia esta Activa
 	}
 
 	public int getId() {

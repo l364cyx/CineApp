@@ -1,3 +1,6 @@
+/**
+ *  Clase de modelo que representa una pelicula en la cartelera
+ */
 package net.itinajero.app.model;
 
 import java.util.Date;
@@ -18,26 +21,33 @@ import javax.persistence.Table;
 public class Pelicula {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)//Auto-incrementable
+	@GeneratedValue(strategy=GenerationType.IDENTITY)// auto_increment MySQL
 	private int id;
 	private String titulo;
-	private int duracion=100;
-	private String clasificacion="B";
+	private int duracion;
+	private String clasificacion;
 	private String genero;
 	private String imagen = "cinema.png"; // imagen por default	
 	private Date fechaEstreno;	
 	private String estatus="Activa";
 	
-	//@Transient  //Se usa para indicar que un atributo no debe ser persistente y no es tomado en cuenta al persistir el objeto
+	//@Transient  //Se usa para indicar que un atributo no debe ser persistente y no es tomado en cuenta al persistir el objeto, ignorar este atributo durante la persistencia
+	// Relacion Uno a Uno -> Una pelicula tiene un registro de detalle
 	@OneToOne
-	@JoinColumn(name = "idDetalle")//Relacion 1 a 1 entre la entidad Película y la Entidad Detalle
+	@JoinColumn(name = "idDetalle")// foreignKey en la tabla de Peliculas
 	private Detalle detalle;
 	
+	/* En realidad en la aplicacion, no se ocupa la consulta de TODOS los horarios por idPelicula.
+	 * La consulta que se ocupa es TODOS LOS HORARIOS POR FECHA para una determinada pelicula.
+	 * Por eso, dejamos comentada dicha relacion, aqui en la clase Pelicula.
+	 * Con esto nos evitamos un left outer join Horarios on pelicula.id=horarios.idPelicula 
+	 */
 	
 	/*
 	 * Con la constante EAGER le decimos que cada vez que consultemos un registro de tipo Pelicula queremos que también se ejecute una consulta 
 	 * en la tabla Horarios para traernos todos los horarios que pertenezcan a la Película que estamos consultando.
 	 */
+	// Relacion Uno a Muchos -> Una pelicula tiene muchos horarios
 //	@OneToMany(mappedBy="pelicula", fetch= FetchType.EAGER)
 //	private List<Horario> horarios;
 	

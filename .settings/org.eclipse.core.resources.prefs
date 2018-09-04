@@ -1,6 +1,6 @@
 eclipse.preferences.version=1
 encoding//src/main/java/net/itinajero/app/controller/HorariosController.java=UTF-8
-encoding//src/main/java/pruebascrudrepo/AppDeleteAll.java=UTF-8
-encoding//src/main/java/pruebascrudrepo/AppExists.java=UTF-8
-encoding//src/main/java/pruebasjparepo/AppDeleteAllInBatch.java=UTF-8
+encoding//src/main/java/pruebascrudrepo_JPA/AppDeleteAll.java=UTF-8
+encoding//src/main/java/pruebascrudrepo_JPA/AppExists.java=UTF-8
+encoding//src/main/java/pruebasjparepo_JPA/AppDeleteAllInBatch.java=UTF-8
 encoding//webapp/WEB-INF/views/peliculas/formPeliculas.jsp=UTF-8

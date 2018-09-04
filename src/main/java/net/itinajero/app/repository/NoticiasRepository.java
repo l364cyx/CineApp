@@ -9,7 +9,17 @@ import org.springframework.stereotype.Repository;
 
 import net.itinajero.app.model.Noticia;
 
-@Repository//Crea un Bean en nuestro contenedor de Beans. Con esto le decimos a Spring que cree un Bean para operaciones con BD
+/**
+ * Marcamos esta clase como un Bean de tipo Repository en nuestro Root
+ * ApplicationContext. Nota: La anotacion @Repository es opcional ya que al
+ * extender la interfaz JpaRepository Spring crea una instancia en nuestro Root
+ * ApplicationContext.
+ */
+
+/*
+ * Crea un Bean en nuestro contenedor de Beans. Con esto le decimos a Spring que cree un Bean para operaciones con BD
+ */
+@Repository
 //public interface NoticiasRepository extends CrudRepository<Noticia, Integer> { //<ENTIDADAD, TIPO CLAVE PRIMARIA>
 public interface NoticiasRepository extends JpaRepository<Noticia, Integer> {
 	//Spring Data JPA nos ofrece otros métodos adicionales a CrudRepository

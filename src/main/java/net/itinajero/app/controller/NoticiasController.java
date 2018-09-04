@@ -1,46 +1,90 @@
 package net.itinajero.app.controller;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import net.itinajero.app.model.Noticia;
 import net.itinajero.app.service.INoticiasService;
-import net.itinajero.app.service.IPeliculasService;
 
 @Controller
-@RequestMapping("/noticias") //RequestMapping a nivel de clase
+@RequestMapping(value = "/noticias")
 public class NoticiasController {
 
-	//Con esta anotación Spring inyecta automáticamente la instancia de nuestra clase al arrancar la aplicación
-	//Inyección de dependcencias 
+	// Inyectamos una instancia desde nuestro Root ApplicationContext
 	@Autowired
-	private INoticiasService noticiasService;
-	
-	@GetMapping(value="/create")
-	public String crear()
-	{
-		//El directorio no tiene que llamarse igual que el RequestMapping
-		return "noticias/formNoticias";
+	private INoticiasService serviceNoticias;
+
+	// Metodo que muestra la lista de noticias
+	@GetMapping(value = "/index")
+	public String mostrarIndex(Model model) {
+		List<Noticia> listaNoticias = serviceNoticias.buscarTodas();
+		model.addAttribute("noticias", listaNoticias);
+		return "noticias/listNoticias";
 	}
-	
-	@PostMapping(value="/save")
-	public String guardar(@RequestParam("titulo") String titulo,@RequestParam("estatus") String estatus, 
-							@RequestParam("detalle") String detalle)
-	{
-		Noticia noticia = new Noticia();
-		noticia.setTitulo(titulo);
-		noticia.setEstatus(estatus);
-		noticia.setDetalle(detalle);
-		
-//		System.out.println(noticia);
-		
-		noticiasService.guardar(noticia);
-		
-		
-		return "noticias/formNoticias";
+
+	/**
+	 * Metodo para mostrar el formulario para crear una noticia
+	 * 
+	 * @param noticia
+	 * @return
+	 */
+	@GetMapping(value = "/create")
+	public String crear(@ModelAttribute Noticia noticia) {
+		return "noticias/formNoticia";
 	}
+
+	/**
+	 * Metodo para guardar el registro de la Noticia
+	 * 
+	 * @param noticia
+	 * @param result
+	 * @param model
+	 * @return
+	 */
+	@PostMapping(value = "/save")
+	public String guardar(@ModelAttribute Noticia noticia, BindingResult result, Model model,
+			RedirectAttributes attributes) {
+		// Insertamos la noticia
+		serviceNoticias.guardar(noticia);
+		attributes.addFlashAttribute("msg", "Los datos de la noticia fueron guardados!");
+		return "redirect:/noticias/index";
+	}
+
+	/**
+	 * Metodo para eliminar una noticia
+	 * 
+	 * @param idNoticia
+	 * @param model
+	 * @param attributes
+	 * @return
+	 */
+	@GetMapping(value = "/delete/{id}")
+	public String eliminar(@PathVariable("id") int idNoticia, RedirectAttributes attributes) {
+		serviceNoticias.eliminar(idNoticia);
+		attributes.addFlashAttribute("msg", "La noticia fue eliminada!.");
+		return "redirect:/noticias/index";
+	}
+
+	/**
+	 * Metodo para mostrar el formulario de Editar
+	 * 
+	 * @param idNoticia
+	 * @param model
+	 * @return
+	 */
+	@GetMapping(value = "/edit/{id}")
+	public String editar(@PathVariable("id") int idNoticia, Model model) {
+		Noticia noticia = serviceNoticias.buscarPorId(idNoticia);
+		model.addAttribute("noticia", noticia);
+		return "noticias/formNoticia";
+	}
+
 }

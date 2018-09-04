@@ -28,4 +28,22 @@ public class NoticiasServiceImpl implements INoticiasService{
 		return null;
 	}
 
+	@Override
+	public List<Noticia> buscarTodas() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void eliminar(int idNoticia) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Noticia buscarPorId(int idNoticia) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
